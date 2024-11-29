@@ -51,19 +51,20 @@
             const list = document.getElementById("dataList");
 
             // If the data is an array print the list
-            if (Array.isArray(data)) {
+            // if (Array.isArray(data)) {
                 list.innerHTML = ""; // Clear the list
                 data.forEach((item) => {
                     const listItem = document.createElement("li");
                     listItem.textContent = `Name: ${item.name}, Age: ${item.age}, Gender: ${item.gender}`;
                     list.appendChild(listItem);
                 });
-            } else {
+            // } 
+            // else {
                 // If it's a single object (new data), append it to the list
-                const listItem = document.createElement("li");
-                listItem.textContent = `Name: ${data.name}, Age: ${data.age}, Gender: ${data.gender}`;
-                list.appendChild(listItem);
-            }
+                // const listItem = document.createElement("li");
+                // listItem.textContent = `Name: ${data.name}, Age: ${data.age}, Gender: ${data.gender}`;
+                // list.appendChild(listItem);
+            // }
         }
 
         document.querySelector("#clearBtn").addEventListener("click", function () {

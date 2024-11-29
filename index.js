@@ -18,12 +18,10 @@ instance.get('/', (req, res) => {
 instance.post('/', (req, res) => {
   res.sendFile(__dirname + "/index.html");
   let formData = req.body;
-
   storedData.push(formData);
 
   // WebSocket send data to clients
-  clients(formData);
-
+  clients(storedData);
   console.log(formData);
 });
 
@@ -38,6 +36,7 @@ websocket.on("connection", function (wss) {
   wss.on("message", function (msg) {
     console.log("server message: ", msg.toString());
 
+    // Handle clear button
     if (msg.toString() == "clear") {
       storedData = [];
     }
@@ -47,10 +46,10 @@ websocket.on("connection", function (wss) {
 });
 
 function clients(data) {
+  // Send data to all clients
   websocket.clients.forEach(element => {
     if (element.readyState === element.OPEN) {
       element.send(JSON.stringify(data));
-
     } else {
       console.log("item disconnected");
     }
