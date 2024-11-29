@@ -5,8 +5,6 @@
     <title>Iot_Lab1</title>
     <meta charset="utf-8">
     <meta name="view-port" content="width=device-width">
-
-
 </head>
 
 <body style="background-color: greenyellow;">
@@ -27,40 +25,26 @@
         <input name="gender" id="female" type="radio" value="Female">
         <label for="female">Female</label>
 
-
         <button id="btn" type="submit" name="submit" style="margin-left: 16%;">Submit</button>
-        <!-- <input type="button" value="submit"> -->
     </form>
+    <button id="clearBtn" style="margin-top: 10px; margin-left: 25%; width: 50%;">Clear List</button>
 
     <hr width="100%" size="5" color="green">
 
     <!-- Print stored data in an ordered list  -->
     <ol id="dataList"></ol>
 
-
     <script>
-        document.querySelector("#btn").addEventListener("click", function () {
-
-        });
-
         const host = location.origin.replace("http", "ws");
         const wss = new WebSocket(host);
 
         wss.onopen = () => {
-            // console.log(host);
             console.log("Client Opened");
-
-            // wss.send("sent to server");
         };
 
         wss.onmessage = (msg) => {
-            // console.log("client msg");
-
             const data = JSON.parse(msg.data); // Parse the JSON data
             updateList(data);
-            // console.log("Received from server:", data);
-
-            // console.log(data);
         };
 
         function updateList(data) {
@@ -82,7 +66,9 @@
             }
         }
 
-
+        document.querySelector("#clearBtn").addEventListener("click", function () {
+            wss.send("clear");
+        });
 
     </script>
 

@@ -13,8 +13,6 @@ const server = instance.listen(port, () => {
 
 instance.get('/', (req, res) => {
   res.sendFile(__dirname + "/index.html");
-
-  // console.log(x);
 });
 
 instance.post('/', (req, res) => {
@@ -40,7 +38,11 @@ websocket.on("connection", function (wss) {
   wss.on("message", function (msg) {
     console.log("server message: ", msg.toString());
 
-    clients(msg.toString());
+    if (msg.toString() == "clear") {
+      storedData = [];
+    }
+
+    clients(storedData);
   });
 });
 
@@ -48,7 +50,6 @@ function clients(data) {
   websocket.clients.forEach(element => {
     if (element.readyState === element.OPEN) {
       element.send(JSON.stringify(data));
-
 
     } else {
       console.log("item disconnected");
