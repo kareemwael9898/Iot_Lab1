@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Iot_Lab1</title>
+    <meta charset="utf-8">
+    <meta name="view-port" content="width=device-width">
+
+
+</head>
+
+<body style="background-color: greenyellow;">
+    <h1>Iot Lab1</h1>
+    <h3>Enter Your Data</h3>
+    <form id="myForm" method="post" action="/">
+        <b>Name</b>
+        <input name="name" type="text" placeholder="Enter your name" required>
+
+        <b style="margin-left: 10%;">Age</b>
+        <input name="age" type="number" value="1" min="1" max="120">
+
+        <br><br>
+
+        <b>Gender</b>
+        <input name="gender" id="male" type="radio" value="Male" required>
+        <label for="male">Male</label>
+        <input name="gender" id="female" type="radio" value="Female">
+        <label for="female">Female</label>
+
+
+        <button id="btn" type="submit" name="submit" style="margin-left: 16%;">Submit</button>
+        <!-- <input type="button" value="submit"> -->
+    </form>
+
+    <hr width="100%" size="5" color="green">
+
+    <!-- Print stored data in an ordered list  -->
+    <ol id="dataList"></ol>
+
+
+    <script>
+        document.querySelector("#btn").addEventListener("click", function () {
+
+        });
+
+        const host = location.origin.replace("http", "ws");
+        const wss = new WebSocket(host);
+
+        wss.onopen = () => {
+            // console.log(host);
+            console.log("Client Opened");
+
+            // wss.send("sent to server");
+        };
+
+        wss.onmessage = (msg) => {
+            // console.log("client msg");
+
+            const data = JSON.parse(msg.data); // Parse the JSON data
+            updateList(data);
+            // console.log("Received from server:", data);
+
+            // console.log(data);
+        };
+
+        function updateList(data) {
+            const list = document.getElementById("dataList");
+
+            // If the data is an array print the list
+            if (Array.isArray(data)) {
+                list.innerHTML = ""; // Clear the list
+                data.forEach((item) => {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = `Name: ${item.name}, Age: ${item.age}, Gender: ${item.gender}`;
+                    list.appendChild(listItem);
+                });
+            } else {
+                // If it's a single object (new data), append it to the list
+                const listItem = document.createElement("li");
+                listItem.textContent = `Name: ${data.name}, Age: ${data.age}, Gender: ${data.gender}`;
+                list.appendChild(listItem);
+            }
+        }
+
+
+
+    </script>
+
+</body>
+
+</html>
